@@ -1,0 +1,16 @@
+plugins {
+    id 'war'
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+	compileOnly group: 'com.sun.xml.ws', name: 'jaxws-rt', version: '2.3.3'
+	compileOnly group: 'jakarta.platform', name: 'jakarta.jakartaee-web-api', version: '8.0.0'
+
+	testImplementation group: 'junit', name: 'junit', version: '4.13' 
+	testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.15.0'
+
+}
