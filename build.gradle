@@ -13,4 +13,13 @@ dependencies {
 	testImplementation group: 'junit', name: 'junit', version: '4.13' 
 	testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.15.0'
 
+	testCompileOnly group: 'org.apache.cxf', name: 'cxf-rt-rs-client', version: '3.3.6'
+        
+    testImplementation group: 'org.jboss.arquillian.junit', name: 'arquillian-junit-container', version: '1.6.0.Final'
+	testImplementation group: 'org.apache.tomee', name: 'arquillian-tomee-embedded', version: '8.0.1'
+	
+    testImplementation group: 'org.jboss.shrinkwrap.resolver', name: 'shrinkwrap-resolver-api', version: '3.1.4'
+    testImplementation group: 'org.jboss.shrinkwrap.resolver', name: 'shrinkwrap-resolver-spi', version: '3.1.4'
+	testImplementation group: 'org.jboss.shrinkwrap.resolver', name: 'shrinkwrap-resolver-impl-gradle', version: '3.1.4'
+	testImplementation group: 'org.gradle', name: 'gradle-tooling-api', version: '6.4.1'
 }

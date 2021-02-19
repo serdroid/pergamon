@@ -3,6 +3,8 @@ package info.serdroid.pergamon.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 
+import info.serdroid.pergamon.api.CalculatorService;
+
 public class CalculatorServiceTest {
 
 	@Test
