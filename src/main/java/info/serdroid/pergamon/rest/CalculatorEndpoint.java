@@ -20,9 +20,10 @@ public class CalculatorEndpoint {
 	CalculatorService calculatorService;
 	
 	@GET
+	@Path("/add")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Produces(MediaType.TEXT_PLAIN)
-	public Response upload(@QueryParam("first") int first, @QueryParam("second") int second ) {
+	public Response add(@QueryParam("first") int first, @QueryParam("second") int second ) {
 		int result = calculatorService.Add(first, second);
 		return Response.ok(result).build();
 	}

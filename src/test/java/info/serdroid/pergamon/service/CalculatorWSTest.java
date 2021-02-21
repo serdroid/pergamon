@@ -41,7 +41,7 @@ public class CalculatorWSTest {
 
 	@Test
 	public void testRestAdd() {
-		WebClient client = WebClient.create(restUrlPrefix + "calc");
+		WebClient client = WebClient.create(restUrlPrefix + "calc/add");
 		client.type(MediaType.APPLICATION_FORM_URLENCODED);
 		client.query("first", 1);
 		client.query("second", 2);
