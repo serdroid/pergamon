@@ -22,4 +22,6 @@ dependencies {
     testImplementation group: 'org.jboss.shrinkwrap.resolver', name: 'shrinkwrap-resolver-spi', version: '3.1.4'
 	testImplementation group: 'org.jboss.shrinkwrap.resolver', name: 'shrinkwrap-resolver-impl-gradle', version: '3.1.4'
 	testImplementation group: 'org.gradle', name: 'gradle-tooling-api', version: '6.4.1'
+	testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.6.28'
+	
 }
