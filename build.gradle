@@ -25,3 +25,60 @@ dependencies {
 	testImplementation group: 'org.mockito', name: 'mockito-core', version: '3.6.28'
 	
 }
+
+configurations {
+    jaxws
+}
+
+dependencies {
+	jaxws group: 'com.sun.xml.ws', name: 'jaxws-tools', version: '2.3.3'
+}
+
+
+task wsgen(type: JavaExec) {
+	def genDir = "src/main/generated"
+    
+    doFirst {
+        mkdir genDir
+    }
+	inputs.files sourceSets.main.runtimeClasspath.asPath
+	outputs.dir 'src/main/resources/wsdl'
+    classpath configurations.jaxws.asPath
+    main = "com.sun.tools.ws.WsGen"
+    args "-wsdl",
+        "-keep",
+        "-cp", sourceSets.main.runtimeClasspath.asPath ,
+        "-s", genDir,
+        "-d", genDir,
+        "-r", "src/main/resources/wsdl",
+        "-Xnocompile",
+        "-inlineSchemas",
+        "-extension",
+        "-encoding", "UTF-8",
+        "info.serdroid.pergamon.ws.CalculatorWS"
+}
+
+task wsimport(type: JavaExec) {
+	def genDir = "src/main/generated"
+    
+    doFirst {
+        mkdir genDir
+    }
+	dependsOn 'wsgen'
+	inputs.file 'src/main/resources/wsdl/CalculatorWebService.wsdl'
+	outputs.dir 'src/main/java/info/serdroid/pergamon/ws/client'
+    classpath configurations.jaxws.asPath
+    main = "com.sun.tools.ws.WsImport"
+    args "-target", "2.0",
+        "-s", "src/main/java",
+        "-d", genDir,
+        "-keep",
+        "-p", "info.serdroid.pergamon.ws.client",
+        "-Xnocompile",
+        "-extension",
+        "-encoding", "UTF-8",
+        "-wsdllocation", "src/main/resources/wsdl/CalculatorWebService.wsdl",
+        "src/main/resources/wsdl/CalculatorWebService.wsdl"
+}
+
+compileTestJava.dependsOn wsimport
