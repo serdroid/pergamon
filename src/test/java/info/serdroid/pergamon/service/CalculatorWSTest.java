@@ -2,6 +2,9 @@ package info.serdroid.pergamon.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.IOException;
+import java.net.URL;
+
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -17,9 +20,13 @@ import org.jboss.shrinkwrap.resolver.impl.gradle.ScopeType;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import info.serdroid.pergamon.ws.client.CalculatorWS;
+import info.serdroid.pergamon.ws.client.CalculatorWSClient;
+
 @RunWith(Arquillian.class)
 public class CalculatorWSTest {
 
+	private static final String testUrl = "http://localhost:19080/calculator-server/CalculatorWebService?wsdl";
 	private static final String restUrlPrefix = "http://localhost:19080/calculator-server/rest/";
 
     @Deployment
@@ -32,6 +39,7 @@ public class CalculatorWSTest {
         war.addPackages(false, "info.serdroid.pergamon.api")
         		.addPackages(false, "info.serdroid.pergamon.service")
         		.addPackages(false, "info.serdroid.pergamon.rest")
+        		.addPackages(true, "info.serdroid.pergamon.ws")
         		.addAsLibraries(archives)
                 .addAsWebInfResource("beans-test.xml", "beans.xml")
                 ;
@@ -49,6 +57,18 @@ public class CalculatorWSTest {
         Response response = client.get();
 		String result = response.readEntity(String.class);
 		assertThat(result).isEqualTo("3");
+	}
+
+	@Test
+	public void testSoapAdd() throws IOException {
+		CalculatorWS calcWS = createWS();
+		int result = calcWS.add(1, 2);
+		assertThat(result).isEqualTo(3);
+	}
+	
+	private CalculatorWS createWS() throws IOException {
+		CalculatorWS calcWS = CalculatorWSClient.createWS(new URL(testUrl));
+		return calcWS;
 	}
 
 }

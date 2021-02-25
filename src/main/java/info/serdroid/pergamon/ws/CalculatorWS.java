@@ -8,7 +8,7 @@ import javax.jws.WebService;
 import info.serdroid.pergamon.api.CalculatorService;
 
 @ApplicationScoped
-@WebService(name = "CalculatorWS", serviceName = "CalculatorWebService")
+@WebService(name = "CalculatorWS", serviceName = "CalculatorWebService", wsdlLocation = "wsdl/CalculatorWebService.wsdl")
 public class CalculatorWS {
 	@Inject
 	CalculatorService calculatorService;
