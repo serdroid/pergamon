@@ -1,4 +1,4 @@
-package info.serdroid.pergamon.service;
+package info.serdroid.pergamon.ws;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

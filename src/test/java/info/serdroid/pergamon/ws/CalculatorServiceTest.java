@@ -1,9 +1,10 @@
-package info.serdroid.pergamon.service;
+package info.serdroid.pergamon.ws;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 
 import info.serdroid.pergamon.api.CalculatorService;
+import info.serdroid.pergamon.service.CalculatorServiceImpl;
 
 public class CalculatorServiceTest {
 
