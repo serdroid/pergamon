@@ -45,6 +45,7 @@ public class CalculatorWSTest {
         war.addPackages(false, "info.serdroid.pergamon.api")
         		.addPackages(false, "info.serdroid.pergamon.rest")
         		.addPackages(true, "info.serdroid.pergamon.ws")
+        		.addPackages(true, "info.serdroid.pergamon.interceptor")
         		.addAsLibraries(archives)
                 .addAsWebInfResource("beans-test.xml", "beans.xml")
                 ;
