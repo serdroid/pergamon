@@ -13,6 +13,7 @@ import javax.xml.ws.WebServiceContext;
 import javax.xml.ws.handler.MessageContext;
 
 import info.serdroid.pergamon.api.CalculatorService;
+import info.serdroid.pergamon.common.PergamonConstants;
 import info.serdroid.pergamon.interceptor.CalculatorWSCall;
 
 @ApplicationScoped
@@ -39,7 +40,7 @@ public class CalculatorWS {
 	public void setContext(Map<String, Object> context) {
 		HttpServletRequest req = (HttpServletRequest) wsContext.getMessageContext().get(MessageContext.SERVLET_REQUEST);
 		String authHeader = req.getHeader("Authorization");
-		context.put("userId", "admin");
+		context.put(PergamonConstants.USERID_KEY, "admin");
 		System.out.println("setting context");
 	}
 

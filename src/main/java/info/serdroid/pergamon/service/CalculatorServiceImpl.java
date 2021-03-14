@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.enterprise.context.ApplicationScoped;
 
 import info.serdroid.pergamon.api.CalculatorService;
+import info.serdroid.pergamon.common.PergamonConstants;
 
 @ApplicationScoped
 public class CalculatorServiceImpl implements CalculatorService {
@@ -21,10 +22,14 @@ public class CalculatorServiceImpl implements CalculatorService {
 
 	@Override
 	public int Add(int first, int second) {
-		String userId = (String) currentContext.get().get("userId");
-		System.out.println("userId from ctx:" + userId);
-		
 		return first + second;
+	}
+
+	@Override
+	public String getCurrentUserId() {
+		String userId = (String) currentContext.get().get(PergamonConstants.USERID_KEY);
+		System.out.println("userId from ctx:" + userId);
+		return userId;
 	}
 
 

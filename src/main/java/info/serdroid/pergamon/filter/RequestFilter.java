@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import info.serdroid.pergamon.api.CalculatorService;
+import info.serdroid.pergamon.common.PergamonConstants;
 import info.serdroid.pergamon.util.BasicAuthentication;
 
 @Provider
@@ -45,7 +46,7 @@ public class RequestFilter implements ContainerRequestFilter {
 		*/
 		Map<String, Object> context = new HashMap<>();
 //		context.addItem("userId", basic.getUserName());
-		context.put("userId", "admin");
+		context.put(PergamonConstants.USERID_KEY, "admin");
 		calculatorService.setCallContext(context);
 	}
 }

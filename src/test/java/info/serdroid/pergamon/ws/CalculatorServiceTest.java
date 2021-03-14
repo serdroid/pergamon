@@ -8,18 +8,27 @@ import java.util.Map;
 import org.junit.Test;
 
 import info.serdroid.pergamon.api.CalculatorService;
+import info.serdroid.pergamon.common.PergamonConstants;
 import info.serdroid.pergamon.service.CalculatorServiceImpl;
 
 public class CalculatorServiceTest {
 
 	@Test
-	public void testAdd() {
+	public void add() {
 		CalculatorService calcService = new CalculatorServiceImpl();
-		Map<String, Object> ctx = new HashMap<>();
-		ctx.put("userId", "admin");
-		calcService.setCallContext(ctx);
 		int sum = calcService.Add(1, 2);
 		assertThat(sum).isEqualTo(3);
+	}
+
+	@Test
+	public void getCurrentUserId() {
+		CalculatorService calcService = new CalculatorServiceImpl();
+		Map<String, Object> ctx = new HashMap<>();
+		String userId = "admin";
+		ctx.put(PergamonConstants.USERID_KEY, userId);
+		calcService.setCallContext(ctx);
+		String currentUserId = calcService.getCurrentUserId();
+		assertThat(currentUserId).isEqualTo(userId);
 	}
 
 }
