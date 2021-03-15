@@ -1,14 +1,20 @@
 package info.serdroid.pergamon.service;
 
 import java.util.Map;
+import java.util.Optional;
 
 import javax.enterprise.context.ApplicationScoped;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import info.serdroid.pergamon.api.CalculatorService;
 import info.serdroid.pergamon.common.PergamonConstants;
+import info.serdroid.pergamon.filter.RequestFilter;
 
 @ApplicationScoped
 public class CalculatorServiceImpl implements CalculatorService {
+	private static final Logger logger = LoggerFactory.getLogger(RequestFilter.class);
 	private ThreadLocal<Map<String, Object>> currentContext;
 	
 	public CalculatorServiceImpl() {
@@ -17,6 +23,7 @@ public class CalculatorServiceImpl implements CalculatorService {
 
 	@Override
 	public void setCallContext(Map<String, Object> ctx) {
+		logger.debug("setting current context");
 		currentContext.set(ctx);
 	}
 
@@ -26,10 +33,21 @@ public class CalculatorServiceImpl implements CalculatorService {
 	}
 
 	@Override
-	public String getCurrentUserId() {
-		String userId = (String) currentContext.get().get(PergamonConstants.USERID_KEY);
-		System.out.println("userId from ctx:" + userId);
-		return userId;
+	public Optional<String> getCurrentUserId() {
+		Map<String, Object> ctx = currentContext.get();
+		if ( ctx == null ) {
+			System.out.println("context is null "+ Thread.currentThread());
+			return Optional.empty();
+		}
+		String userId = (String) ctx.get(PergamonConstants.USERID_KEY);
+		return Optional.ofNullable(userId);
+	}
+
+	@Override
+	public String AddAndGetUser(int first, int second) {
+		int res = Add(first, second);
+		String userid = getCurrentUserId().orElse("NOT FOUND");
+		return String.format("User %s has called, result = %d", userid, res);
 	}
 
 

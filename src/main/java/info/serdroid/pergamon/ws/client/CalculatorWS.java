@@ -36,4 +36,21 @@ public interface CalculatorWS {
         @WebParam(name = "arg1", targetNamespace = "")
         int arg1);
 
+    /**
+     * 
+     * @param arg1
+     * @param arg0
+     * @return
+     *     returns java.lang.String
+     */
+    @WebMethod(operationName = "AddAndGetUser")
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "AddAndGetUser", targetNamespace = "http://ws.pergamon.serdroid.info/", className = "info.serdroid.pergamon.ws.client.AddAndGetUser")
+    @ResponseWrapper(localName = "AddAndGetUserResponse", targetNamespace = "http://ws.pergamon.serdroid.info/", className = "info.serdroid.pergamon.ws.client.AddAndGetUserResponse")
+    public String addAndGetUser(
+        @WebParam(name = "arg0", targetNamespace = "")
+        int arg0,
+        @WebParam(name = "arg1", targetNamespace = "")
+        int arg1);
+
 }

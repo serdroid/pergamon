@@ -27,7 +27,7 @@ public class CalculatorServiceTest {
 		String userId = "admin";
 		ctx.put(PergamonConstants.USERID_KEY, userId);
 		calcService.setCallContext(ctx);
-		String currentUserId = calcService.getCurrentUserId();
+		String currentUserId = calcService.getCurrentUserId().orElse("");
 		assertThat(currentUserId).isEqualTo(userId);
 	}
 

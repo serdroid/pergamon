@@ -27,7 +27,7 @@ import info.serdroid.pergamon.ws.client.CalculatorWS;
 import info.serdroid.pergamon.ws.client.CalculatorWSClient;
 
 @RunWith(Arquillian.class)
-public class CalculatorWSTest {
+public class CalculatorWSMockedTest {
 
 	private static final String testUrl = "http://localhost:19080/calculator-server/CalculatorWebService?wsdl";
 	private static final String restUrlPrefix = "http://localhost:19080/calculator-server/rest/";
@@ -44,8 +44,7 @@ public class CalculatorWSTest {
 				.asList(JavaArchive.class).toArray(new Archive[0]);
         war.addPackages(false, "info.serdroid.pergamon.api")
         		.addPackages(false, "info.serdroid.pergamon.rest")
-        		.addPackages(false, "info.serdroid.pergamon.ws")
-        		.addPackages(false, "info.serdroid.pergamon.service")
+        		.addPackages(true, "info.serdroid.pergamon.ws")
         		.addPackages(true, "info.serdroid.pergamon.interceptor")
         		.addAsLibraries(archives)
                 .addAsWebInfResource("beans-test.xml", "beans.xml")
@@ -55,7 +54,8 @@ public class CalculatorWSTest {
     }
 
 	@Test
-	public void rest_Add() {
+	public void testRestAdd() {
+		Mockito.when(calculatorService.Add(1, 2)).thenReturn(5);
 		WebClient client = WebClient.create(restUrlPrefix + "calc/add");
 		client.type(MediaType.APPLICATION_FORM_URLENCODED);
 		client.query("first", 1);
@@ -63,21 +63,15 @@ public class CalculatorWSTest {
 		client.accept(MediaType.TEXT_PLAIN);
         Response response = client.get();
 		String result = response.readEntity(String.class);
-		assertThat(result).isEqualTo("3");
+		assertThat(result).isEqualTo("5");
 	}
 
 	@Test
-	public void soap_Add() throws IOException {
+	public void testSoapAdd() throws IOException {
+		Mockito.when(calculatorService.Add(1, 2)).thenReturn(5);
 		CalculatorWS calcWS = createWS();
 		int result = calcWS.add(1, 2);
-		assertThat(result).isEqualTo(3);
-	}
-	
-	@Test
-	public void soap_Add_And_Get_Userid() throws IOException {
-		CalculatorWS calcWS = createWS();
-		String result = calcWS.addAndGetUser(2, 3);
-		assertThat(result).isEqualTo("User admin has called, result = 5");
+		assertThat(result).isEqualTo(5);
 	}
 	
 	private CalculatorWS createWS() throws IOException {

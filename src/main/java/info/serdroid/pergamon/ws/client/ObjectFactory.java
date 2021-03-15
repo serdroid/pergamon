@@ -24,6 +24,8 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
+    private final static QName _AddAndGetUser_QNAME = new QName("http://ws.pergamon.serdroid.info/", "AddAndGetUser");
+    private final static QName _AddAndGetUserResponse_QNAME = new QName("http://ws.pergamon.serdroid.info/", "AddAndGetUserResponse");
     private final static QName _Add_QNAME = new QName("http://ws.pergamon.serdroid.info/", "add");
     private final static QName _AddResponse_QNAME = new QName("http://ws.pergamon.serdroid.info/", "addResponse");
 
@@ -32,6 +34,22 @@ public class ObjectFactory {
      * 
      */
     public ObjectFactory() {
+    }
+
+    /**
+     * Create an instance of {@link AddAndGetUser }
+     * 
+     */
+    public AddAndGetUser createAddAndGetUser() {
+        return new AddAndGetUser();
+    }
+
+    /**
+     * Create an instance of {@link AddAndGetUserResponse }
+     * 
+     */
+    public AddAndGetUserResponse createAddAndGetUserResponse() {
+        return new AddAndGetUserResponse();
     }
 
     /**
@@ -48,6 +66,32 @@ public class ObjectFactory {
      */
     public AddResponse createAddResponse() {
         return new AddResponse();
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link AddAndGetUser }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link AddAndGetUser }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://ws.pergamon.serdroid.info/", name = "AddAndGetUser")
+    public JAXBElement<AddAndGetUser> createAddAndGetUser(AddAndGetUser value) {
+        return new JAXBElement<AddAndGetUser>(_AddAndGetUser_QNAME, AddAndGetUser.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link AddAndGetUserResponse }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link AddAndGetUserResponse }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://ws.pergamon.serdroid.info/", name = "AddAndGetUserResponse")
+    public JAXBElement<AddAndGetUserResponse> createAddAndGetUserResponse(AddAndGetUserResponse value) {
+        return new JAXBElement<AddAndGetUserResponse>(_AddAndGetUserResponse_QNAME, AddAndGetUserResponse.class, null, value);
     }
 
     /**

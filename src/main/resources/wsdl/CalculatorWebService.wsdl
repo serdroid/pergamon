@@ -4,6 +4,10 @@
   <types>
     <xs:schema version="1.0" targetNamespace="http://ws.pergamon.serdroid.info/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
+      <xs:element name="AddAndGetUser" type="tns:AddAndGetUser"/>
+
+      <xs:element name="AddAndGetUserResponse" type="tns:AddAndGetUserResponse"/>
+
       <xs:element name="add" type="tns:add"/>
 
       <xs:element name="addResponse" type="tns:addResponse"/>
@@ -20,6 +24,19 @@
           <xs:element name="return" type="xs:int"/>
         </xs:sequence>
       </xs:complexType>
+
+      <xs:complexType name="AddAndGetUser">
+        <xs:sequence>
+          <xs:element name="arg0" type="xs:int"/>
+          <xs:element name="arg1" type="xs:int"/>
+        </xs:sequence>
+      </xs:complexType>
+
+      <xs:complexType name="AddAndGetUserResponse">
+        <xs:sequence>
+          <xs:element name="return" type="xs:string" minOccurs="0"/>
+        </xs:sequence>
+      </xs:complexType>
 </xs:schema>
   </types>
   <message name="add">
@@ -28,15 +45,34 @@
   <message name="addResponse">
     <part name="parameters" element="tns:addResponse"/>
   </message>
+  <message name="AddAndGetUser">
+    <part name="parameters" element="tns:AddAndGetUser"/>
+  </message>
+  <message name="AddAndGetUserResponse">
+    <part name="parameters" element="tns:AddAndGetUserResponse"/>
+  </message>
   <portType name="CalculatorWS">
     <operation name="add">
       <input wsam:Action="http://ws.pergamon.serdroid.info/CalculatorWS/addRequest" message="tns:add"/>
       <output wsam:Action="http://ws.pergamon.serdroid.info/CalculatorWS/addResponse" message="tns:addResponse"/>
     </operation>
+    <operation name="AddAndGetUser">
+      <input wsam:Action="http://ws.pergamon.serdroid.info/CalculatorWS/AddAndGetUserRequest" message="tns:AddAndGetUser"/>
+      <output wsam:Action="http://ws.pergamon.serdroid.info/CalculatorWS/AddAndGetUserResponse" message="tns:AddAndGetUserResponse"/>
+    </operation>
   </portType>
   <binding name="CalculatorWSPortBinding" type="tns:CalculatorWS">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
     <operation name="add">
+      <soap:operation soapAction=""/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+    <operation name="AddAndGetUser">
       <soap:operation soapAction=""/>
       <input>
         <soap:body use="literal"/>

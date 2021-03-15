@@ -36,12 +36,17 @@ public class CalculatorWS {
 		return calculatorService.Add(first, second);
 	}
 
+	@WebMethod
+	public String AddAndGetUser(int first, int second) {
+		return calculatorService.AddAndGetUser(first, second);
+	}
+	
 	@WebMethod(exclude = true)
 	public void setContext(Map<String, Object> context) {
 		HttpServletRequest req = (HttpServletRequest) wsContext.getMessageContext().get(MessageContext.SERVLET_REQUEST);
 		String authHeader = req.getHeader("Authorization");
 		context.put(PergamonConstants.USERID_KEY, "admin");
-		System.out.println("setting context");
+		calculatorService.setCallContext(context);
 	}
 
 }
