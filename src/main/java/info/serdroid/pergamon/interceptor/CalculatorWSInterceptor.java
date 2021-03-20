@@ -1,8 +1,5 @@
 package info.serdroid.pergamon.interceptor;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.annotation.Priority;
 import javax.enterprise.context.Dependent;
 import javax.interceptor.AroundInvoke;
@@ -24,12 +21,10 @@ public class CalculatorWSInterceptor {
 
 	@AroundInvoke
 	public Object saveContextToTLS(InvocationContext invocationContext) throws Exception {
-		System.out.println("intercepting " + invocationContext.getMethod().getName());
 		logger.debug("{} is intercepting method={} target={}", this.getClass().getName(), invocationContext.getMethod().getName(), invocationContext.getTarget());
 		if ( invocationContext.getMethod().getDeclaringClass() == CalculatorWS.class 
 				&& invocationContext.getMethod().isAnnotationPresent(WebMethod.class)) {
-			Map<String, Object> ctxMap = new HashMap<>();
-			((CalculatorWS) invocationContext.getTarget()).setContext(ctxMap);
+			((CalculatorWS) invocationContext.getTarget()).setContext();
 		}
 		return invocationContext.proceed();
 	}

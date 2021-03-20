@@ -1,5 +1,6 @@
 package info.serdroid.pergamon.ws;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -15,6 +16,7 @@ import javax.xml.ws.handler.MessageContext;
 import info.serdroid.pergamon.api.CalculatorService;
 import info.serdroid.pergamon.common.PergamonConstants;
 import info.serdroid.pergamon.interceptor.CalculatorWSCall;
+import info.serdroid.pergamon.util.BasicAuthentication;
 
 @ApplicationScoped
 @CalculatorWSCall
@@ -23,7 +25,6 @@ public class CalculatorWS {
 	private WebServiceContext wsContext;
 	@Inject
 	private CalculatorService calculatorService;
-	
 	
 	@XmlTransient
 	@Resource
@@ -42,11 +43,17 @@ public class CalculatorWS {
 	}
 	
 	@WebMethod(exclude = true)
-	public void setContext(Map<String, Object> context) {
+	public void setContext() {
 		HttpServletRequest req = (HttpServletRequest) wsContext.getMessageContext().get(MessageContext.SERVLET_REQUEST);
 		String authHeader = req.getHeader("Authorization");
-		context.put(PergamonConstants.USERID_KEY, "admin");
+		if ( authHeader == null ) {
+			throw new RuntimeException("Authorization Required");
+		}
+		BasicAuthentication basic = new BasicAuthentication(authHeader);
+		Map<String, Object> context = new HashMap<>();
+		context.put(PergamonConstants.USERID_KEY, basic.getUserName());
 		calculatorService.setCallContext(context);
+
 	}
 
 }

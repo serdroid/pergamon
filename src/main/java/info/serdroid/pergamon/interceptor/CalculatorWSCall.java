@@ -12,5 +12,4 @@ import javax.interceptor.InterceptorBinding;
 @Retention(RUNTIME)
 @Target({ TYPE, METHOD })
 public @interface CalculatorWSCall {
-
 }

@@ -32,11 +32,9 @@ public class CalculatorServiceImpl implements CalculatorService {
 		return first + second;
 	}
 
-	@Override
-	public Optional<String> getCurrentUserId() {
+	Optional<String> getCurrentUserId() {
 		Map<String, Object> ctx = currentContext.get();
 		if ( ctx == null ) {
-			System.out.println("context is null "+ Thread.currentThread());
 			return Optional.empty();
 		}
 		String userId = (String) ctx.get(PergamonConstants.USERID_KEY);
@@ -46,9 +44,9 @@ public class CalculatorServiceImpl implements CalculatorService {
 	@Override
 	public String AddAndGetUser(int first, int second) {
 		int res = Add(first, second);
+		// gets current user id from thread local context map
 		String userid = getCurrentUserId().orElse("NOT FOUND");
 		return String.format("User %s has called, result = %d", userid, res);
 	}
-
 
 }

@@ -4,10 +4,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.xml.ws.BindingProvider;
+import javax.xml.ws.handler.MessageContext;
 
 import org.apache.cxf.jaxrs.client.WebClient;
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -23,6 +29,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 
 import info.serdroid.pergamon.api.CalculatorService;
+import info.serdroid.pergamon.util.BasicAuthentication;
 import info.serdroid.pergamon.ws.client.CalculatorWS;
 import info.serdroid.pergamon.ws.client.CalculatorWSClient;
 
@@ -44,6 +51,7 @@ public class CalculatorWSMockedTest {
 				.asList(JavaArchive.class).toArray(new Archive[0]);
         war.addPackages(false, "info.serdroid.pergamon.api")
         		.addPackages(false, "info.serdroid.pergamon.rest")
+        		.addPackages(false, "info.serdroid.pergamon.filter")
         		.addPackages(true, "info.serdroid.pergamon.ws")
         		.addPackages(true, "info.serdroid.pergamon.interceptor")
         		.addAsLibraries(archives)
@@ -54,29 +62,49 @@ public class CalculatorWSMockedTest {
     }
 
 	@Test
-	public void testRestAdd() {
+	public void rest_Add() {
 		Mockito.when(calculatorService.Add(1, 2)).thenReturn(5);
 		WebClient client = WebClient.create(restUrlPrefix + "calc/add");
 		client.type(MediaType.APPLICATION_FORM_URLENCODED);
 		client.query("first", 1);
 		client.query("second", 2);
 		client.accept(MediaType.TEXT_PLAIN);
-        Response response = client.get();
+		BasicAuthentication basicAuthentication = new BasicAuthentication("testuser", "passwd");
+		String basicAuth =  "Basic " + basicAuthentication.getEncoded();
+		client.header("Authorization", basicAuth);
+		Response response = client.get();
 		String result = response.readEntity(String.class);
 		assertThat(result).isEqualTo("5");
 	}
 
 	@Test
-	public void testSoapAdd() throws IOException {
+	public void soap_Add() throws IOException {
 		Mockito.when(calculatorService.Add(1, 2)).thenReturn(5);
 		CalculatorWS calcWS = createWS();
+		addAuthorizationHeader(calcWS);
 		int result = calcWS.add(1, 2);
 		assertThat(result).isEqualTo(5);
 	}
+
+	private void addAuthorizationHeader(CalculatorWS calcWS) {
+		Map<String, Object> requestContext = ((BindingProvider) calcWS).getRequestContext();
+		Map<String, List<String>> headers = new HashMap<String, List<String>>();
+		BasicAuthentication basicAuthentication = new BasicAuthentication("testuser", "passwd");
+		String basicAuth =  "Basic " + basicAuthentication.getEncoded();
+        headers.put("Authorization", Collections.singletonList(basicAuth));
+		requestContext.put(MessageContext.HTTP_REQUEST_HEADERS, headers);
+	}
+	
+	@Test
+	public void soap_Add_And_Get_Userid() throws IOException {
+		CalculatorWS calcWS = createWS();
+		addAuthorizationHeader(calcWS);
+		String result = calcWS.addAndGetUser(2, 3);
+		assertThat(result).isEqualTo("User testuser has called, result = 5");
+	}
 	
 	private CalculatorWS createWS() throws IOException {
-		CalculatorWS calcWS = CalculatorWSClient.createWS(new URL(testUrl));
-		return calcWS;
+		return CalculatorWSClient.createWS(new URL(testUrl));
 	}
 
 }

@@ -23,16 +23,18 @@ import info.serdroid.pergamon.util.BasicAuthentication;
 @ApplicationScoped
 public class RequestFilter implements ContainerRequestFilter {
 	private static final Logger logger = LoggerFactory.getLogger(RequestFilter.class);
+
 	@Inject
 	private CalculatorService calculatorService;
 
+	@Override
 	public void filter(ContainerRequestContext requestContext) throws IOException {
 		String path = requestContext.getUriInfo().getPath();
 		logger.info("path={}", path);
 		if(path.startsWith("/")) {
 			path = path.substring(1);
 		}
-		/*
+		
 		MultivaluedMap<String,String> headers = requestContext.getHeaders();
 		String authorization = headers.getFirst("Authorization");
 		logger.info("Processing Authorization header: {} for path={}", authorization, path );
@@ -43,10 +45,9 @@ public class RequestFilter implements ContainerRequestFilter {
 			return;
 		}
 		BasicAuthentication basic = new BasicAuthentication(authorization);
-		*/
+		
 		Map<String, Object> context = new HashMap<>();
-//		context.addItem("userId", basic.getUserName());
-		context.put(PergamonConstants.USERID_KEY, "admin");
+		context.put(PergamonConstants.USERID_KEY, basic.getUserName());
 		calculatorService.setCallContext(context);
 	}
 }
