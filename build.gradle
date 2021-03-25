@@ -6,6 +6,10 @@ repositories {
     jcenter()
 }
 
+sourceCompatibility = 11
+targetCompatibility = 11
+group = 'info.serdroid.pergamon'
+
 dependencies {
 	compileOnly group: 'com.sun.xml.ws', name: 'jaxws-rt', version: '2.3.3'
 	compileOnly group: 'jakarta.platform', name: 'jakarta.jakartaee-web-api', version: '8.0.0'
